@@ -1,0 +1,8 @@
+{% extends 'base_ajax_form_modal.html' %}
+{% load static %}
+{% block header_modal %}
+    <div class="col-12 mb-2">
+        <p><b>Usuario:</b> {{ persona_s.nombres_completos_lienal }}</p>
+        <p><b>Cédula:</b> {{ persona_s.cedula }}</p>
+    </div>
+{% endblock %}

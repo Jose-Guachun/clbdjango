@@ -1,0 +1,109 @@
+{% extends 'base_admin.html' %}
+{% load extra_tags %}
+{% load static %}
+{% block heading %}{% endblock %}
+{% block url_atras %}{{ request.path }}{% endblock %}
+{% block extra_js %}
+
+{% endblock %}
+{% block enlaces_top %}
+    <li class="breadcrumb-item"><a href="{% url 'cursos:adm_cursos' %}"> Cursos </a></li>
+    <li class="breadcrumb-item">{{ title }}</li>
+{% endblock %}
+{% block botones_top %}
+        <a href="javascript:void(0);" onclick="formModal('','Adicionar categoría','addcategoria','modal-md')" class="btn btn-success btn-xs"><i class="fas fa-plus"></i> Adicionar</a>
+{% endblock %}
+{% block content_1 %}
+    <div class="row mb-3">
+        <form class="col-12" method="GET">
+            <!-- Card header -->
+            <div class="card-header border-bottom-0 p-0 bg-white">
+                <div class="d-flex align-items-center">
+                    <span class="position-absolute ps-3 search-icon">
+                        <i class="fe fe-search"></i>
+                    </span>
+                    <input type="hidden" name="action" value="{{ action }}">
+                    <input type="search" class="form-control ps-6" name="s" placeholder="Buscar categoría..." value="{{ s }}"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <!-- Card -->
+            <div class="card rounded-3">
+                <!-- Table -->
+                <div class="tab-content" id="tabContent">
+                    <!--Tab pane -->
+                    <div class="tab-pane fade show active" id="courses" role="tabpanel"
+                         aria-labelledby="courses-tab">
+                        <div class="table-responsive border-0 overflow-y-hidden">
+                            <table class="table mb-0 text-nowrap table-bordered">
+                                <thead class="table-light">
+                                <tr>
+                                    <th scope="col" class="text-center">
+                                        <i class="fas fa-sort-numeric-asc"></i>
+                                    </th>
+                                    <th scope="col" class="text-uppercase">
+                                        Categoría
+                                    </th>
+                                    <th scope="col" class="text-uppercase">
+                                        Descripción
+                                    </th>
+                                    <th scope="col" class="text-uppercase text-center">
+                                        <i class="fas fa-cogs"></i>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for l in listado %}
+                                    <tr>
+                                        <td class="text-center align-middle w-5">{{ forloop.counter }}</td>
+                                        <td class="border-top-0 w-30">
+                                            <h4 class="mb-1 text-primary-hover"> {{ l.titulo }}</h4>
+                                        </td>
+                                        <td class="align-middle border-top-0 w-30">
+                                            <p>{{ l.descripcion }}</p>
+                                        </td>
+                                        <td class="align-middle border-top-0 text-center w-5">
+                                                <span class="dropdown dropstart">
+                                                  <a class="btn-icon btn btn-sm rounded-circle" href="#"
+                                                     role="button"
+                                                     id="courseDropdown1"
+                                                     data-bs-toggle="dropdown" data-bs-offset="-20,20"
+                                                     aria-expanded="false">
+                                                  <i class="fe fe-more-vertical"></i>
+                                                  </a>
+                                                  <span class="dropdown-menu" aria-labelledby="courseDropdown1">
+                                                  <span class="dropdown-header"><i class="fas fa-cogs"></i> Acciones</span>
+                                                    <a class="dropdown-item" href="javascript:void(0);"
+                                                        onclick="formModal('{{ l.pk|encrypt }}','{{ l }}','editcategoria','modal-md')">
+                                                        <i class="fe fe-edit dropdown-item-icon"></i>Editar
+                                                    </a>
+                                                      <a class="dropdown-item" href="javascript:void(0)"
+                                                         onclick="eliminarajax('{{ l.pk|encrypt }}','{{ l }}','delcategoria')">
+                                                        <i class="fe fe-trash dropdown-item-icon"></i>Eliminar
+                                                    </a>
+                                                  </span>
+                                                </span>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center">No existen registros</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                {% include 'paginador.html' %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

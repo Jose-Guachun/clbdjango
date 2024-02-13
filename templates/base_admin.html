@@ -1,0 +1,380 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block heading %}
+{% endblock %}
+{% block content_js %}
+    <script type="text/javascript">
+        $(function (){
+            // Obtener el valor de la variable almacenada
+            console.log(localStorage)
+            var desplegado=localStorage.getItem('desplegado')
+            if ('desplegado' in localStorage && desplegado==='true'){
+                $("#db-wrapper").toggleClass("toggled")
+            }
+            $(".desplegar").click(function (){
+                let valido=$('#db-wrapper').hasClass('toggled').toString()
+                console.log(valido)
+                localStorage.setItem('desplegado', valido);
+            })
+        })
+    </script>
+    {% block extra_js %}{% endblock %}
+{% endblock %}
+{% block content %}
+    <div id="db-wrapper">
+        <!-- navbar vertical -->
+        <!-- Sidebar -->
+        <nav class="navbar-vertical navbar navbar-dark bg-dark">
+            <div class="vh-100" data-simplebar>
+                <!-- Brand logo -->
+                <a class="navbar-brand bloqueo" href="{% url 'users:home' %}">
+                    <img src="../../assets/images/brand/logo/logo-inverse.svg" alt=""/>
+                </a>
+                <!-- Navbar nav -->
+                <ul class="navbar-nav flex-column" id="sideNavbar">
+
+                    <!-- Nav item -->
+                    <li class="nav-item">
+                        <a class="nav-link bloqueo {% if viewactivo == 'home' %}active{% endif %}" href="{% url 'users:home' %}">
+                            <i class="nav-icon fe fe-home me-2"></i> Inicio
+                        </a>
+                    </li>
+                    {% for m_categoria in request.session.modulo_categorias %}
+                        <!-- Nav item -->
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#nav{{ m_categoria.nombre }}"
+                               aria-expanded="false" aria-controls="nav{{ m_categoria.nombre }}">
+                                <i class="nav-icon {{ m_categoria.icono }} me-2"></i> {{ m_categoria.nombre }}
+                            </a>
+                            <div id="nav{{ m_categoria.nombre }}" class="collapse {% if request.session.viewactivo in m_categoria.modulos_slugs  %}show{% endif %}" data-bs-parent="#sideNavbar">
+                                <ul class="nav flex-column">
+                                    {% for modulo in m_categoria.modulos %}
+                                        <li class="nav-item">
+                                            <a class="nav-link bloqueo {% if request.session.viewactivo == modulo.slug %}active{% endif %}"
+                                               href="{{ request.scheme }}://{{ request.get_host }}/{{ modulo.url }}">
+{#                                                <i class="nav-icon {{ modulo.icono }} me-2"></i> {{ modulo.nombre }}#}
+                                                {{ modulo.nombre }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    <li class="nav-item">
+                        <div class="navbar-heading">Apps</div>
+                    </li>
+                    <!-- Nav item -->
+                    <li class="nav-item">
+                        <a class="nav-link " href="chat-app.html">
+                            <i class="nav-icon fe fe-message-square me-2"></i> Ch
+                        </a>
+                    </li>
+                    <!-- Nav item -->
+                    <li class="nav-item">
+                        <a class="nav-link " href="task-kanban.html">
+                            <i class="nav-icon mdi mdi-trello me-2"></i>
+                            Task
+                        </a>
+                    </li>
+                    <!-- Nav item -->
+                    <li class="nav-item">
+                        <a class="nav-link " href="mail.html">
+                            <i class="nav-icon mdi mdi-email-outline me-2"></i>
+                            Mail
+                        </a>
+                    </li>
+                    <!-- Nav item -->
+                    <li class="nav-item">
+                        <a class="nav-link " href="calendar.html">
+                            <i class="nav-icon mdi mdi-calendar me-2"></i>
+                            Calendar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-divider"></div>
+                    </li>
+                    <!-- Nav item -->
+                    <li class="nav-item">
+                        <div class="navbar-heading">Administración del sistema</div>
+                    </li>
+                    <!-- Nav item -->
+                    <li class="nav-item">
+                        <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navTables"
+                           aria-expanded="false" aria-controls="navTables">
+                            <i class="nav-icon fe fe-database me-2"></i> Modulos
+                        </a>
+                        <div id="navTables" class="collapse " data-bs-parent="#sideNavbar">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link " href="basic-table.html">
+                                        Grupo Modulos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="datatables.html">
+
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Nav item -->
+                    <li class="nav-item">
+                        <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse"
+                           data-bs-target="#navSiteSetting" aria-expanded="false" aria-controls="navSiteSetting">
+                            <i class="nav-icon fe fe-settings me-2"></i> Configuración
+                        </a>
+                        <div id="navSiteSetting" class="collapse " data-bs-parent="#sideNavbar">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link " href="setting-general.html">
+                                        General
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="setting-google.html">
+                                        Google
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="setting-social.html">
+                                        Social
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="setting-social-login.html">
+                                        Social Login
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="setting-payment.html">
+                                        Payment
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="setting-smpt.html">
+                                        SMPT
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Nav item -->
+                    <li class="nav-item">
+                        <div class="nav-divider"></div>
+                    </li>
+                    <!-- Nav item -->
+                </ul>
+                <!-- Card -->
+                <div class="card bg-dark-primary shadow-none text-center mx-4 my-8">
+                    <div class="card-body py-6">
+                        <img src="../../assets/images/background/giftbox.png" alt=""/>
+                        <div class="mt-4">
+                            <h5 class="text-white">Cursos</h5>
+                            <p class="text-white-50 fs-6">
+                                Los cursos que se encuentren vigentes y este publicados podran ser visualizados
+                            </p>
+                            <a href="#" class="btn btn-white btn-sm mt-2">Ver cursos</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Page Content -->
+        <div id="page-content">
+            <div class="header">
+                <!-- navbar -->
+                <nav class="navbar-default navbar navbar-expand-lg">
+                    <a id="nav-toggle" href="#" class="desplegar">
+                        <i class="fe fe-menu"></i>
+                    </a>
+
+                    <!--Navbar nav -->
+                    <ul class="navbar-nav navbar-right-wrap ms-auto d-flex nav-top-wrap">
+                        <li class="dropdown stopevent">
+                            <a class="btn btn-light btn-icon rounded-circle indicator indicator-primary text-muted"
+                               href="#" role="button" id="dropdownNotification" data-bs-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <i class="fe fe-bell"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg"
+                                 aria-labelledby="dropdownNotification">
+                                <div class=" ">
+                                    <div class="border-bottom px-3 pb-3 d-flex justify-content-between align-items-center">
+                                        <span class="h4 mb-0">Notificaciones</span>
+                                        <a href="# " class="text-muted">
+                                        <span class="align-middle">
+                                        <i class="fe fe-settings me-1"></i>
+                                    </span>
+                                        </a>
+                                    </div>
+                                    <!-- List group -->
+                                    <ul class="list-group list-group-flush" data-simplebar style="max-height: 300px;">
+                                        <li class="list-group-item bg-light">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <a class="text-body" href="#">
+                                                        <div class="d-flex">
+                                                            {{ request.session.persona.get_avatar_img_md|safe }}
+                                                            <div class="ms-3">
+                                                                <h5 class="fw-bold mb-1">Kristin Watson:</h5>
+                                                                <p class="mb-3">
+                                                                    Notificación a mostrar
+                                                                </p>
+                                                                <span class="fs-6 text-muted">
+                                                                    <span>
+                                                                        <span class="fe fe-thumbs-up text-success me-1"></span>
+                                                                        <span class="fe fe-award text-warning me-1"></span>
+                                                                        hace 2 horas,
+                                                                    </span>
+                                                                    <span class="ms-1">2:19 PM</span>
+                                                                    <span class="ms-1">Oct, 1:56 PM</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-auto text-center me-2">
+                                                    <a href="#"
+                                                        class="badge-dot bg-info"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
+                                                        title="Marcar como leído">
+                                                    </a>
+                                                    <div>
+                                                        <a href="#"
+                                                            class="bg-transparent"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            title="Eliminar">
+                                                            <i class="fe fe-x text-muted"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="border-top px-3 pt-3 pb-0">
+                                        <a href="../notification-history.html" class="text-link fw-semi-bold">
+                                            Ver todas las notificaciones
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- List -->
+                        <li class="dropdown ms-2">
+                            <a class="rounded-circle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                {{ request.session.persona.get_avatar_html_40px|safe }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                                <div class="dropdown-item">
+                                    <div class="d-flex">
+                                        {{ request.session.persona.get_avatar_html_40px|safe }}
+                                        <div class="ms-3 lh-1">
+                                            <h5 class="mb-0">{{ request.session.persona.nombres_simple }}</h5>
+                                            <p class="mb-0 text-muted">{{ user.username }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <ul class="list-unstyled">
+                                    <li class="dropdown-submenu dropstart-lg">
+                                        <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                                            <i class="fe fe-circle me-2"></i> Estado
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item" href="#">
+                                                    <span class="badge-dot bg-success me-2"></span> Online
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="#">
+                                                    <span class="badge-dot bg-secondary me-2"></span> Offline
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="#">
+                                                    <span class="badge-dot bg-warning me-2"></span> Away
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="#">
+                                                    <span class="badge-dot bg-danger me-2"></span> Busy
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="../profile-edit.html">
+                                            <i class="fe fe-user me-2"></i> Perfil
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="../student-subscriptions.html">
+                                            <i class="fe fe-star me-2"></i> Subscription
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fe fe-settings me-2"></i> Configurar cuenta
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="dropdown-divider"></div>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'users:logout' %}">
+                                            <i class="fe fe-power me-2"></i> Cerrar Sesión
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- Container fluid -->
+            <div class="container-fluid p-4">
+                {% if not request.session.viewactivo == 'home' %}
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Page Header -->
+                            <div class="border-bottom pb-3 mb-4 d-md-flex align-items-center justify-content-between">
+                                <div class="mb-3 mb-md-0">
+                                    <h1 class="mb-1 h2 fw-bold">
+                                        <a href="{% block url_atras %}/{% endblock %}" title="Atras" id="id_atras" data-bs-toggle="tooltip" class="rounded-circle text-secondary bloqueo">
+                                            <i class="bi bi-arrow-left-circle-fill"></i>
+                                        </a> {{ title|lower|capfirst }} <span class="fs-5 text-muted" id="l_total"></span>
+                                    </h1>
+                                    <!-- Breadcrumb -->
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                                            {% block enlaces_top %}
+
+                                            {% endblock %}
+                                        </ol>
+                                    </nav>
+                                </div>
+                                <div>
+                                    {% block botones_top %}
+
+                                    {% endblock %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% block content_1 %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

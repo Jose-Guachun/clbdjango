@@ -1,0 +1,112 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+{% load extra_tags %}
+{% block heading %}{% endblock %}
+{% block extra_js %}
+    <script type="text/javascript">
+        $(function (){
+            $("#l_total").text('({{ listado.count }})')
+        })
+    </script>
+{% endblock %}
+{% block enlaces_top %}
+    <li class="breadcrumb-item">{{ title }}</li>
+{% endblock %}
+{% block botones_top %}
+    <div class="nav btn-group" role="tablist">
+        <a href="{% url 'users:administrativos' %}?action=addadministrativo" class="btn btn-success btn-xs btn-xl" title="Adicionar docente" data-bs-toggle="tooltip"> <i class="fas fa-plus"></i> Adicionar</a>
+    </div>
+{% endblock %}
+{% block content_1 %}
+    <div class="row mb-3">
+        <form class="col-12" method="GET">
+            <!-- Card header -->
+            <div class="card-header border-bottom-0 p-0 bg-white">
+                <div class="d-flex align-items-center">
+                    <span class="position-absolute ps-3 search-icon">
+                        <i class="fe fe-search"></i>
+                    </span>
+                    <input type="search" class="form-control ps-6" name="s" placeholder="Buscar por cédula, username, nombres o apellidos..." value="{{ s }}"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-12">
+        <div class="card">
+            <!-- table -->
+            <div class="table-responsive">
+                <table class="table mb-0 text-nowrap table-bordered" id="l_table">
+                    <thead class="table-light">
+                        <tr>
+                             <th scope="col" class="text-center w-5">
+                                <i class="fas fa-sort-numeric-asc"></i>
+                            </th>
+                            <th scope="col" class="text-uppercase">
+                                Administrativo
+                            </th>
+                            <th scope="col" class="text-uppercase text-center">
+                                Detalle
+                            </th>
+                            <th scope="col" class="text-uppercase text-center w-5">
+                                Activo
+                            </th>
+                            <th scope="col" class="text-uppercase text-center w-5">
+                                <i class="fas fa-cogs"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for l in listado %}
+                        <tr>
+                            <td class="text-center align-middle w-5">{{ forloop.counter }}</td>
+                            <td class="align-middle border-top-0 w-20">
+                                <div class="d-flex align-items-center">
+                                    {{ l.persona.get_avatar_img_sm|safe }}
+                                    <h5 class="mb-0">{{ l.persona.nombres_simple }}</h5>
+                                </div>
+                            </td>
+                            <td class="align-middle border-top-0 text-center w-20">
+                                <p>{{ l.tipoprofesor|lower|capfirst }}</p>
+                                <p>{{ l.fechaingreso|date:'d-m-Y' }}</p>
+                            </td>
+                            <td class="align-middle border-top-0 text-center w-5">
+                                <input type="checkbox" class="form-check-input" {% if l.publicado %}checked{% endif %}>
+                            </td>
+                            <td class="align-middle border-top-0 text-center w-5">
+                                <span class="dropdown dropstart">
+                                  <a class="btn-icon btn btn-sm rounded-circle" href="#"
+                                     role="button"
+                                     id="courseDropdown1"
+                                     data-bs-toggle="dropdown" data-bs-offset="-20,20"
+                                     aria-expanded="false">
+                                  <i class="fe fe-more-vertical"></i>
+                                  </a>
+                                  <span class="dropdown-menu" aria-labelledby="courseDropdown1">
+                                  <span class="dropdown-header"><i class="fas fa-cogs"></i> Acciones</span>
+                                    <a class="dropdown-item"
+                                       href="{{ request.path }}?action=editprofesor&id={{ l.pk|encrypt }}">
+                                        <i class="fe fe-edit dropdown-item-icon"></i>Editar
+                                    </a>
+                                      <a class="dropdown-item" href="javascript:void(0);"
+                                         onclick="formModal('{{ l.pk|encrypt }}','Gestionar usuario','gestionarusuario','modal-md',false,'','','fa-user-gear')">
+                                        <i class="fas fa-user-gear dropdown-item-icon"></i> Gestionar usuario
+                                    </a>
+                                  </span>
+                                </span>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No existen registros</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                {% include 'paginador.html' %}
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}

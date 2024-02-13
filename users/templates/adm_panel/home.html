@@ -1,0 +1,67 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+{% block heading %}
+{% endblock %}
+{% block content_js %}
+    <script>
+    </script>
+{% endblock %}
+{% block content_1 %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-12">
+            <div class="border-bottom pb-4 mb-4 d-lg-flex justify-content-between align-items-center">
+                <div class="mb-3 mb-lg-0">
+                    <h1 class="mb-0 h2 fw-bold">Bienvenido {{ request.session.persona.nombres_simple }}</h1>
+                </div>
+                <!-- Form -->
+                <form class="" method="GET">
+                    <div class="card-header border-bottom-0 p-0 bg-white">
+                        <div class="d-flex align-items-center">
+                             <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i>
+                        </span>
+                        <input type="search" class="form-control ps-6"
+                               placeholder="Buscar módulo..."/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% for m_categoria in request.session.modulo_categorias %}
+        <div class="row mb-3">
+            <h3>{{ m_categoria.nombre }}</h3>
+            {% for modulo in m_categoria.modulos %}
+                <div class="col-xxl-2 col-xl-3 col-lg-4 col-sm-6 col-12">
+                    <!-- card -->
+                    <a href="{{ modulo.url }}" class="bloqueo">
+                        <div class="card border-top border-muted border-4 card-hover-with-icon">
+                            <!-- card body -->
+                            <div class="card-body py-3 p-2">
+                                <!-- icon  -->
+                                <div class="row">
+                                    <div class="col-4 col-sm-3 d-flex align-items-center text-center justify-content-around p-0 ps-2">
+                                        <div class="icon-shape icon-lg rounded-circle bg-light text-muted  card-icon">
+                                            <i class="{{ modulo.icono }} fs-3"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-8 col-sm-9">
+                                        <div>
+                                            <!-- heading -->
+
+                                            <h4 class="mb-0">{{ modulo.nombre }}</h4>
+                                            <!-- text -->
+
+                                            <p class="mb-0 text-muted"
+                                               style="line-height: 15px">{{ modulo.descripcion }} </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}

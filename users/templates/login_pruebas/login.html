@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión</title>
+  {% load static %}
+    <link rel="stylesheet" href="{%static 'login/css/style.css'%}" />
+  </head>
+  <body>
+    <main>
+      <div class="box">
+        <div class="inner-box">
+          <div class="forms-wrap">
+            <form autocomplete="off" class="sign-in-form form-s" method="POST">
+             {% csrf_token %}
+              <div class="logo">
+                <img src="./img/logo.png" alt="cursos" />
+                <h4>Cursos</h4>
+              </div>
+
+              <div class="heading">
+                <h2>Bienvenido</h2>
+                <h6>¿No estas registrado?</h6>
+                <a href="#" class="toggle">Registrate</a>
+              </div>
+              <div class="actual-form">
+                  {% for field in form %}
+                    <div class="input-wrap">
+                      <input
+                        type="{{ field.widget_type }}"
+                        minlength="4"
+                        class="input-field"
+                        autocomplete="off"
+                        name="{{ field.name }}"
+                        required
+                      />
+                      <label> {{ field.label }}</label>
+                    </div>
+                  {% endfor %}
+                <button type="submit" class="sign-btn" />Iniciar Sesión</button>
+                <p class="text">
+                    Olvidó su contraseña o sus datos de inicio de sesión?
+                  <a href="#">Obtener ayuda</a> Iniciar Sesión
+                </p>
+              </div>
+            </form>
+
+            <form autocomplete="off" class="sign-up-form form-s">
+                {% csrf_token %}
+              <div class="logo">
+                <img src="./img/logo.png" alt="cursos" />
+                <h4>cursos</h4>
+              </div>
+
+              <div class="heading">
+                <h2>Empezar</h2>
+                <h6>¿Ya tienes una cuenta?</h6>
+                <a href="#" class="toggle">Inicia sesíon</a>
+              </div>
+                <br>
+              <div class="actual-form">
+                 <div class="input-wrap">
+                <input
+                type="email"
+                minlength="4"
+                class="input-field"
+                autocomplete="off"
+                name="email"
+                required/>
+                <label>Correo electrónico</label>
+                </div>
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    minlength="4"
+                    class="input-field"
+                    autocomplete="off"
+                    name="nombres"
+                    required/>
+                  <label>Nombres</label>
+                </div>
+               <div class="input-wrap">
+                  <input
+                    type="text"
+                    minlength="4"
+                    class="input-field"
+                    autocomplete="off"
+                    name="apellido1"
+                    required/>
+                  <label>Primer Apellido</label>
+                </div>
+                 <div class="input-wrap">
+                  <input
+                    type="text"
+                    minlength="4"
+                    class="input-field"
+                    autocomplete="off"
+                    name="apellido2"
+                    required/>
+                  <label>Segundo Apellido</label>
+                </div>
+                <div class="input-wrap">
+                  <input
+                    type="email"
+                    class="input-field"
+                    autocomplete="off"
+                    required/>
+                  <label>Correo electrónico</label>
+                </div>
+
+                <div class="input-wrap">
+                  <input
+                    type="password"
+                    minlength="4"
+                    class="input-field"
+                    autocomplete="off"
+                    required/>
+                  <label>Contraseña</label>
+                </div>
+                <div class="input-wrap">
+                  <input
+                    type="password"
+                    minlength="4"
+                    class="input-field"
+                    autocomplete="off"
+                    required/>
+                  <label>Confirmar contraseña</label>
+                </div>
+
+                <input type="submit" value="Sign Up" class="sign-btn" />
+
+                <p class="text">
+                  Al registrame acepto las
+                  <a href="#">condiciones del servicio</a> y
+                  <a href="#">políticas de privacidad</a>
+                </p>
+              </div>
+            </form>
+          </div>
+
+          <div class="carousel">
+            <div class="images-wrapper">
+              <img src="{% static 'login/img/soldado.jpg'%}" class="image img-1 show" alt="" />
+              <img src="{% static 'login/img/soldado.jpg'%}" class="image img-2" alt="" />
+              <img src="{% static 'login/img/soldado.jpg'%}" class="image img-3" alt="" />
+            </div>
+
+            <div class="text-slider">
+              <div class="text-wrap">
+                <div class="text-group">
+                  <h2>Create your own courses</h2>
+                  <h2>Customize as you like</h2>
+                  <h2>Invite students to your class</h2>
+                </div>
+              </div>
+
+              <div class="bullets">
+                <span class="active" data-value="1"></span>
+                <span data-value="2"></span>
+                <span data-value="3"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Javascript file -->
+
+    <script src="{% static 'login/js/login.js' %}"></script>
+  </body>
+</html>
